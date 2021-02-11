@@ -1,5 +1,5 @@
-import React from 'react'
-import './styles.scss'
+import React from 'react';
+import './styles.scss';
 import {ReactComponent as ArrowIcon} from '../../assets/images/arrow.svg';
 import { type } from 'os';
 
