@@ -16,10 +16,16 @@ ul {
 }
 
 a {
+    color: inherit;
   &:hover {
     text-decoration: none;
     color: unset;
   }
+}
+
+Link {
+  text-decoration: none;
+  color: unset;
 }
 
 .card-base{
