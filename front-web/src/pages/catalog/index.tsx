@@ -1,30 +1,46 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { ProductsResponse } from '../../core/types/Product';
+import { makeRequest } from '../../core/utils/request';
 import ProductCard from './components/ProductCard';
 import './styles.scss'
 
 
-const Catalog = () => (
 
-    <div className="catalog-container">
-        <h1 className="catalog-title" >
-            Catalogo de produtos
+const Catalog = () => {
+
+    //quando o componente iniciar, buscar a lista de produtos    
+    //quando a lista de produtos estiver disponivel, popular um estado no componente e listar os produtos dinamicamente    
+    const [productsResponse, setProductsResponse] = useState<ProductsResponse>(); //popular um estado do tipo ProductResponse
+   
+    console.log( productsResponse);
+
+    useEffect (() => {
+        const params = {
+            page: 0,
+            linesPerPage:12
+        }
+
+        makeRequest({url: "/products", params}).then(response => setProductsResponse(response.data));
+    }, [])
+
+ 
+    return (
+        <div className="catalog-container">
+            <h1 className="catalog-title" >
+                Catalogo de produtos
         </h1>
 
-        <div className="catalog-products">
-            <Link to="/products/1" > <ProductCard/> </Link>
-            <Link to="/products/2" > <ProductCard/> </Link>
-            <Link to="/products/3" > <ProductCard/> </Link>
-            <Link to="/products/4" > <ProductCard/> </Link>
-            <Link to="/products/5" > <ProductCard/> </Link>
-            <Link to="/products/6" > <ProductCard/> </Link>
-            <Link to="/products/7" > <ProductCard/> </Link>
-            <Link to="/products/8" > <ProductCard/> </Link>
-            <Link to="/products/9" > <ProductCard/> </Link>
-               
+            <div className="catalog-products">
+                {productsResponse?.content.map(product => (
+                    <Link to={`/products/${product.id}`} key={product.id} >
+                        <ProductCard product={product} />
+                    </Link>
+                ))} 
+            </div>
         </div>
-    </div>
 
-);
+    );
+}
 
 export default Catalog;
